@@ -41,7 +41,7 @@ class PostController {
       title = "Post",
       content = "Content",
       createdBy = "Ryan",
-      createdAt = LocalDateTime.now(),
+      createdAt = LocalDateTime.now()
     )
   }
 
