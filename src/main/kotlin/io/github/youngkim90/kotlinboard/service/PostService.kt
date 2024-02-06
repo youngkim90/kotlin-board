@@ -2,10 +2,11 @@ package io.github.youngkim90.kotlinboard.service
 
 import io.github.youngkim90.kotlinboard.Exception.PostNotDeletableException
 import io.github.youngkim90.kotlinboard.Exception.PostNotFoundException
+import io.github.youngkim90.kotlinboard.controller.domain.Post
 import io.github.youngkim90.kotlinboard.repository.PostRepository
-import io.github.youngkim90.kotlinboard.service.dto.PostCreateRequestDto
-import io.github.youngkim90.kotlinboard.service.dto.PostUpdateRequestDto
-import io.github.youngkim90.kotlinboard.service.dto.toEntity
+import io.github.youngkim90.kotlinboard.service.dto.*
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -15,6 +16,10 @@ import org.springframework.transaction.annotation.Transactional
 class PostService(
   private val postRepository: PostRepository,
 ) {
+  private fun findById(id: Long): Post {
+    return postRepository.findByIdOrNull(id) ?: throw PostNotFoundException()
+  }
+
   @Transactional // 함수 단위의 트랜잭션이 우선 적용
   fun createPost(requestDto: PostCreateRequestDto): Long {
     return postRepository.save(requestDto.toEntity()).id
@@ -22,7 +27,7 @@ class PostService(
 
   @Transactional
   fun updatePost(id: Long, requestDto: PostUpdateRequestDto): Long {
-    val post = postRepository.findByIdOrNull(id) ?: throw PostNotFoundException()
+    val post = findById(id)
     post.update(requestDto)
     return id
   }
@@ -33,5 +38,17 @@ class PostService(
     if (post.createdBy != deletedBy) throw PostNotDeletableException()
     postRepository.delete(post)
     return id
+  }
+
+  fun getPost(id: Long): PostDetailResponseDto {
+    val post = findById(id)
+    return post.toDetailResponseDto()
+  }
+
+  fun findPageBy(
+    pageRequest: Pageable,
+    postSearchRequestDto: PostSearchRequestDto,
+  ): Page<PostSummaryResponseDto> {
+    return postRepository.findPageBy(pageRequest, postSearchRequestDto).toSummaryResponseDto()
   }
 }
