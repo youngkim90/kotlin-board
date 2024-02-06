@@ -41,7 +41,7 @@ class PostServiceTest(
         Post(title = "title15", content = "content", createdBy = "Ryan1"),
         Post(title = "title16", content = "content", createdBy = "Ryan1"),
         Post(title = "title17", content = "content", createdBy = "Ryan1"),
-        Post(title = "title8", content = "content", createdBy = "Ryan8"),
+        Post(title = "title8", content = "content", createdBy = "Ryan8")
       )
     )
   }

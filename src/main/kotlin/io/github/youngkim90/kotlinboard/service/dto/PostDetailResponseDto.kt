@@ -15,5 +15,5 @@ fun Post.toDetailResponseDto() = PostDetailResponseDto(
   title = this.title,
   content = this.content,
   createdBy = this.createdBy,
-  createdAt = this.createdAt.toString(),
+  createdAt = this.createdAt.toString()
 )

@@ -14,12 +14,12 @@ data class PostSummaryResponse(
 fun Page<PostSummaryResponseDto>.toResponse() = PageImpl<PostSummaryResponse>(
   this.content.map { it.toResponse() },
   this.pageable,
-  this.totalElements,
+  this.totalElements
 )
 
 fun PostSummaryResponseDto.toResponse() = PostSummaryResponse(
   id = this.id,
   title = this.title,
   createdBy = this.createdBy,
-  createdAt = this.createdAt,
+  createdAt = this.createdAt
 )

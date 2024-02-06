@@ -1,7 +1,6 @@
 package io.github.youngkim90.kotlinboard.controller.dto
 
 import io.github.youngkim90.kotlinboard.service.dto.PostDetailResponseDto
-import java.time.LocalDateTime
 
 data class PostDetailResponse(
   val id: Long,
@@ -16,5 +15,5 @@ fun PostDetailResponseDto.toResponse() = PostDetailResponse(
   title = this.title,
   content = this.content,
   createdBy = this.createdBy,
-  createdAt = this.createdAt,
+  createdAt = this.createdAt
 )
