@@ -25,7 +25,7 @@ class Post(
 
   fun update(postUpdateRequestDto: PostUpdateRequestDto) {
     if (postUpdateRequestDto.updatedBy != this.createdBy) throw PostNotUpdatableException()
-    
+
     this.title = postUpdateRequestDto.title
     this.content = postUpdateRequestDto.content
     super.updatedBy(postUpdateRequestDto.updatedBy)
