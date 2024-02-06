@@ -1,6 +1,7 @@
 package io.github.youngkim90.kotlinboard.controller
 
 import io.github.youngkim90.kotlinboard.controller.dto.*
+import io.github.youngkim90.kotlinboard.service.PostService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -14,11 +15,13 @@ import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDateTime
 
 @RestController
-class PostController {
+class PostController(
+  private val postService: PostService,
+) {
 
   @PostMapping("/posts")
   fun createPost(@RequestBody postCreateRequest: PostCreateRequest): Long {
-    return 1L
+    return postService.createPost(postCreateRequest.toDto())
   }
 
   @PutMapping("/posts/{id}")
@@ -26,12 +29,12 @@ class PostController {
     @PathVariable id: Long,
     @RequestBody postUpdateRequest: PostUpdateRequest,
   ): Long {
-    return id
+    return postService.updatePost(id, postUpdateRequest.toDto())
   }
 
   @DeleteMapping("/posts/{id}")
-  fun deletePost(@PathVariable id: Long, @RequestParam createdBy: String) {
-    println("id: $id, createdBy: $createdBy")
+  fun deletePost(@PathVariable id: Long, @RequestParam createdBy: String): Long {
+    return postService.deletePost(id, createdBy)
   }
 
   @GetMapping("/posts/{id}")
