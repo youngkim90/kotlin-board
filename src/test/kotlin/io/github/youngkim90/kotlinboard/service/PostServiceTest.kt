@@ -159,7 +159,7 @@ class PostServiceTest(
         listOf(
           Comment(content = "댓글 내용1", post = saved, createdBy = "Ryan"),
           Comment(content = "댓글 내용2", post = saved, createdBy = "Gosling"),
-          Comment(content = "댓글 내용3", post = saved, createdBy = "Bob"),
+          Comment(content = "댓글 내용3", post = saved, createdBy = "Bob")
         )
       )
       val post = postService.getPost(saved.id)
@@ -171,7 +171,6 @@ class PostServiceTest(
         post.comments[0].createdBy shouldBe "Ryan"
         post.comments[1].createdBy shouldBe "Gosling"
         post.comments[2].createdBy shouldBe "Bob"
-
       }
     }
   }
