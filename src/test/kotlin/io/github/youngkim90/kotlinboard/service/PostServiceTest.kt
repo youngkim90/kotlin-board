@@ -3,7 +3,9 @@ package io.github.youngkim90.kotlinboard.service
 import io.github.youngkim90.kotlinboard.Exception.PostNotDeletableException
 import io.github.youngkim90.kotlinboard.Exception.PostNotFoundException
 import io.github.youngkim90.kotlinboard.Exception.PostNotUpdatableException
+import io.github.youngkim90.kotlinboard.controller.domain.Comment
 import io.github.youngkim90.kotlinboard.controller.domain.Post
+import io.github.youngkim90.kotlinboard.repository.CommentRepository
 import io.github.youngkim90.kotlinboard.repository.PostRepository
 import io.github.youngkim90.kotlinboard.service.dto.PostCreateRequestDto
 import io.github.youngkim90.kotlinboard.service.dto.PostSearchRequestDto
@@ -22,6 +24,7 @@ import org.springframework.data.repository.findByIdOrNull
 class PostServiceTest(
   private val postService: PostService,
   private val postRepository: PostRepository,
+  private val commentRepository: CommentRepository,
 ) : BehaviorSpec({ // given, when, then 구조의 테스트
   /**
    * kotest TDD 테스트코드 작성 방법
@@ -134,11 +137,11 @@ class PostServiceTest(
   }
 
   given("게시글 상세조회시") {
-    val postId = postRepository.save(Post(title = "title", content = "content", createdBy = "Ryan")).id
+    val saved = postRepository.save(Post(title = "title", content = "content", createdBy = "Ryan"))
     When("정상 조회시") {
-      val post = postService.getPost(postId)
+      val post = postService.getPost(saved.id)
       then("게시글의 내용이 정상적으로 반환됨을 확인한다.") {
-        post.id shouldBe postId
+        post.id shouldBe saved.id
         post.title shouldBe "title"
         post.content shouldBe "content"
         post.createdBy shouldBe "Ryan"
@@ -149,6 +152,26 @@ class PostServiceTest(
         shouldThrow<PostNotFoundException> {
           postService.getPost(9999L)
         }
+      }
+    }
+    When("댓글 추가시") {
+      commentRepository.saveAll(
+        listOf(
+          Comment(content = "댓글 내용1", post = saved, createdBy = "Ryan"),
+          Comment(content = "댓글 내용2", post = saved, createdBy = "Gosling"),
+          Comment(content = "댓글 내용3", post = saved, createdBy = "Bob"),
+        )
+      )
+      val post = postService.getPost(saved.id)
+      then("댓글이 함께 조회된다.") {
+        post.comments.size shouldBe 3
+        post.comments[0].content shouldBe "댓글 내용1"
+        post.comments[1].content shouldBe "댓글 내용2"
+        post.comments[2].content shouldBe "댓글 내용3"
+        post.comments[0].createdBy shouldBe "Ryan"
+        post.comments[1].createdBy shouldBe "Gosling"
+        post.comments[2].createdBy shouldBe "Bob"
+
       }
     }
   }
