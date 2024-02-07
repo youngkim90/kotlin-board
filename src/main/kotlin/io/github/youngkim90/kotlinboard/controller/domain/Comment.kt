@@ -1,5 +1,7 @@
 package io.github.youngkim90.kotlinboard.controller.domain
 
+import io.github.youngkim90.kotlinboard.Exception.CommentNotUpdatableException
+import io.github.youngkim90.kotlinboard.service.dto.CommentUpdateRequestDto
 import jakarta.persistence.*
 
 @Entity
@@ -18,4 +20,11 @@ class Comment(
   @ManyToOne(fetch = FetchType.LAZY)
   var post: Post = post
     protected set
+
+  fun update(updateRequestDto: CommentUpdateRequestDto) {
+    if (updateRequestDto.updatedBy != this.createdBy) throw CommentNotUpdatableException()
+
+    this.content = updateRequestDto.content
+    super.updatedBy(updateRequestDto.updatedBy)
+  }
 }
