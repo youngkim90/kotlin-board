@@ -2,10 +2,7 @@ package io.github.youngkim90.kotlinboard.controller.domain
 
 import io.github.youngkim90.kotlinboard.Exception.PostNotUpdatableException
 import io.github.youngkim90.kotlinboard.service.dto.PostUpdateRequestDto
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import jakarta.persistence.*
 
 @Entity
 class Post(
@@ -21,6 +18,10 @@ class Post(
     protected set
 
   var content: String = content
+    protected set
+
+  @OneToMany(mappedBy = "post", orphanRemoval = true, cascade = [CascadeType.ALL])
+  var comments: MutableList<Comment> = mutableListOf()
     protected set
 
   fun update(postUpdateRequestDto: PostUpdateRequestDto) {
