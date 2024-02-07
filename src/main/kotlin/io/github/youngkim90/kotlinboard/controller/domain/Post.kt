@@ -9,6 +9,7 @@ class Post(
   createdBy: String,
   title: String,
   content: String,
+  tags: List<String> = emptyList(),
 ) : BaseEntity(createdBy) {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +24,10 @@ class Post(
   // orphanRemoval=true -> Post와의 관계에서 Comment가 삭제되면 실제 Comment를 삭제하는 옵션
   @OneToMany(mappedBy = "post", orphanRemoval = true, cascade = [CascadeType.ALL])
   var comments: MutableList<Comment> = mutableListOf()
+    protected set
+
+  @OneToMany(mappedBy = "post", orphanRemoval = true, cascade = [CascadeType.ALL])
+  var tags: MutableList<Tag> = tags.map { Tag(it, this, createdBy) }.toMutableList()
     protected set
 
   fun update(postUpdateRequestDto: PostUpdateRequestDto) {
