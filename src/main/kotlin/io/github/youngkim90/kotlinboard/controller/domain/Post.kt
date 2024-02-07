@@ -20,6 +20,7 @@ class Post(
   var content: String = content
     protected set
 
+  // orphanRemoval=true -> Post와의 관계에서 Comment가 삭제되면 실제 Comment를 삭제하는 옵션
   @OneToMany(mappedBy = "post", orphanRemoval = true, cascade = [CascadeType.ALL])
   var comments: MutableList<Comment> = mutableListOf()
     protected set
