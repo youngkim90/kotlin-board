@@ -11,9 +11,11 @@
 2. 로컬/개발(RDS) MySQL 데이터베이스 연동
 3. **Github Actions**와 **Elastic Beastalk**를 활용한 CI/CD 구축
 4. 게시판 API, 도메인(엔티티) 설계
-5. 게시글 C,R,U,D 기능 테스트(**TDD**) 및 구현
+5. 게시글 C,R,U,D 기능 테스트(**TDD**) 및 API 구현
 6. 댓글 API, 도메인(엔티티) 설계
-7. 댓글 C,R,U,D 기능 테스트(**TDD**) 및 구현
+7. 댓글 C,R,U,D 기능 테스트(**TDD**) 및 API 구현
+8. 태그 API, 도메인(엔티티) 설계
+9. 태그 C,R,U,D 기능 테스트(**TDD**) 및 API 구현
 
 ...ing
 
