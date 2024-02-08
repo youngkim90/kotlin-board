@@ -7,6 +7,7 @@ import io.github.youngkim90.kotlinboard.controller.domain.Comment
 import io.github.youngkim90.kotlinboard.controller.domain.Post
 import io.github.youngkim90.kotlinboard.repository.CommentRepository
 import io.github.youngkim90.kotlinboard.repository.PostRepository
+import io.github.youngkim90.kotlinboard.repository.TagRepository
 import io.github.youngkim90.kotlinboard.service.dto.PostCreateRequestDto
 import io.github.youngkim90.kotlinboard.service.dto.PostSearchRequestDto
 import io.github.youngkim90.kotlinboard.service.dto.PostUpdateRequestDto
@@ -25,6 +26,7 @@ class PostServiceTest(
   private val postService: PostService,
   private val postRepository: PostRepository,
   private val commentRepository: CommentRepository,
+  private val tagRepository: TagRepository,
 ) : BehaviorSpec({ // given, when, then 구조의 테스트
   /**
    * kotest TDD 테스트코드 작성 방법
@@ -66,10 +68,27 @@ class PostServiceTest(
         post?.createdBy shouldBe "Ryan"
       }
     }
+    When("태그를 추가하면") {
+      val postId = postService.createPost(
+        PostCreateRequestDto(
+          title = "제목",
+          content = "내용",
+          createdBy = "Ryan",
+          tags = listOf("태그1", "태그2")
+        )
+      )
+      then("태그가 정상적으로 추가된다.") {
+        val tags = tagRepository.findByPostId(postId)
+        tags.size shouldBe 2
+        tags[0].name shouldBe "태그1"
+        tags[1].name shouldBe "태그2"
+      }
+    }
   }
 
   given("게시글 수정시") {
-    val postId = postRepository.save(Post(title = "제목", content = "내용", createdBy = "Ryan")).id
+    val postId =
+      postRepository.save(Post(title = "제목", content = "내용", createdBy = "Ryan", tags = listOf("태그1", "태그2"))).id
     When("정상 수정시") {
       val updatedId = postService.updatePost(
         postId,
@@ -113,6 +132,37 @@ class PostServiceTest(
             )
           )
         }
+      }
+    }
+    When("태그를 수정하였을 때") {
+      val updatedId = postService.updatePost(
+        postId,
+        PostUpdateRequestDto(
+          title = "updated Title",
+          content = "updated Content",
+          updatedBy = "Ryan",
+          tags = listOf("태그1", "태그2", "태그3")
+        )
+      )
+      then("태그가 정상적으로 수정된다.") {
+        val tags = tagRepository.findByPostId(updatedId)
+        tags.size shouldBe 3
+        tags[2].name shouldBe "태그3"
+      }
+      then("태그 순서가 변경되었을때 정상적으로 변경됨을 확인한다.") {
+        postService.updatePost(
+          postId,
+          PostUpdateRequestDto(
+            title = "updated Title",
+            content = "updated Content",
+            updatedBy = "Ryan",
+            tags = listOf("태그3", "태그2", "태그1")
+          )
+        )
+
+        val tags = tagRepository.findByPostId(updatedId)
+        tags.size shouldBe 3
+        tags[2].name shouldBe "태그1"
       }
     }
   }
