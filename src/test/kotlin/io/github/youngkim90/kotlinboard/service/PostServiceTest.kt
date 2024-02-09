@@ -27,6 +27,7 @@ class PostServiceTest(
   private val postRepository: PostRepository,
   private val commentRepository: CommentRepository,
   private val tagRepository: TagRepository,
+  private val likeService: LikeService,
 ) : BehaviorSpec({ // given, when, then 구조의 테스트
   /**
    * kotest TDD 테스트코드 작성 방법
@@ -196,6 +197,9 @@ class PostServiceTest(
           tags = listOf("태그1", "태그2", "태그3")
         )
       )
+    likeService.createLike(saved.id, "Ryan1")
+    likeService.createLike(saved.id, "Ryan2")
+    likeService.createLike(saved.id, "Ryan3")
     When("정상 조회시") {
       val post = postService.getPost(saved.id)
       then("게시글의 내용이 정상적으로 반환됨을 확인한다.") {
@@ -209,6 +213,9 @@ class PostServiceTest(
         post.tags[0] shouldBe "태그1"
         post.tags[1] shouldBe "태그2"
         post.tags[2] shouldBe "태그3"
+      }
+      then("좋아요 개수가 정상적으로 조회된다.") {
+        post.likeCount shouldBe 3
       }
     }
     When("게시글이 없을 때") {
@@ -286,6 +293,20 @@ class PostServiceTest(
         postPage.content[2].title shouldContain "title16"
         postPage.content[3].title shouldContain "title15"
         postPage.content[4].title shouldContain "title14"
+      }
+    }
+    When("좋아요가 추가되었을 때") {
+      val postPage = postService.findPageBy(PageRequest.of(0, 5), PostSearchRequestDto(tag = "태그5"))
+      postPage.content.forEach {
+        likeService.createLike(it.id, "Ryan1")
+        likeService.createLike(it.id, "Ryan2")
+      }
+      val likedPostPage =
+        postService.findPageBy(PageRequest.of(0, 5), PostSearchRequestDto(tag = "태그5"))
+      then("좋아요 개수가 정상적으로 조회된다.") {
+        likedPostPage.content.forEach {
+          it.likeCount shouldBe 2
+        }
       }
     }
   }

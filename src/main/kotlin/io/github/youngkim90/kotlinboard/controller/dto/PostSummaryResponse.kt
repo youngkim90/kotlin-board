@@ -24,5 +24,6 @@ fun PostSummaryResponseDto.toResponse() = PostSummaryResponse(
   title = this.title,
   createdBy = this.createdBy,
   createdAt = this.createdAt,
-  tag = this.firstTag
+  tag = this.firstTag,
+  likeCount = this.likeCount
 )
