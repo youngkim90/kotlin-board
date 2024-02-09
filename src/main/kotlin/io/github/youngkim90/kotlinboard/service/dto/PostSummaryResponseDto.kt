@@ -1,6 +1,6 @@
 package io.github.youngkim90.kotlinboard.service.dto
 
-import io.github.youngkim90.kotlinboard.controller.domain.Post
+import io.github.youngkim90.kotlinboard.domain.Post
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 

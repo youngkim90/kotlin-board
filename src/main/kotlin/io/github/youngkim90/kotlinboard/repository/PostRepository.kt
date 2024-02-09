@@ -1,7 +1,7 @@
 package io.github.youngkim90.kotlinboard.repository
 
-import io.github.youngkim90.kotlinboard.controller.domain.Post
-import io.github.youngkim90.kotlinboard.controller.domain.QPost.post
+import io.github.youngkim90.kotlinboard.domain.Post
+import io.github.youngkim90.kotlinboard.domain.QPost.post
 import io.github.youngkim90.kotlinboard.service.dto.PostSearchRequestDto
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl

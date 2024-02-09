@@ -1,4 +1,4 @@
-package io.github.youngkim90.kotlinboard.controller.domain
+package io.github.youngkim90.kotlinboard.domain
 
 import jakarta.persistence.MappedSuperclass
 import java.time.LocalDateTime

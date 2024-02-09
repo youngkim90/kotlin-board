@@ -1,7 +1,7 @@
 package io.github.youngkim90.kotlinboard.service.dto
 
-import io.github.youngkim90.kotlinboard.controller.domain.Comment
-import io.github.youngkim90.kotlinboard.controller.domain.Post
+import io.github.youngkim90.kotlinboard.domain.Comment
+import io.github.youngkim90.kotlinboard.domain.Post
 
 data class CommentCreateRequestDto(
   val content: String,

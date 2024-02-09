@@ -1,6 +1,6 @@
 package io.github.youngkim90.kotlinboard.service.dto
 
-import io.github.youngkim90.kotlinboard.controller.domain.Comment
+import io.github.youngkim90.kotlinboard.domain.Comment
 
 data class CommentResponseDto(
   val id: Long,

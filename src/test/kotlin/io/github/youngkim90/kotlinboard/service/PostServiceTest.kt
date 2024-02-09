@@ -3,8 +3,8 @@ package io.github.youngkim90.kotlinboard.service
 import io.github.youngkim90.kotlinboard.Exception.PostNotDeletableException
 import io.github.youngkim90.kotlinboard.Exception.PostNotFoundException
 import io.github.youngkim90.kotlinboard.Exception.PostNotUpdatableException
-import io.github.youngkim90.kotlinboard.controller.domain.Comment
-import io.github.youngkim90.kotlinboard.controller.domain.Post
+import io.github.youngkim90.kotlinboard.domain.Comment
+import io.github.youngkim90.kotlinboard.domain.Post
 import io.github.youngkim90.kotlinboard.repository.CommentRepository
 import io.github.youngkim90.kotlinboard.repository.PostRepository
 import io.github.youngkim90.kotlinboard.repository.TagRepository

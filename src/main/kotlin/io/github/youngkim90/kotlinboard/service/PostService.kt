@@ -2,7 +2,7 @@ package io.github.youngkim90.kotlinboard.service
 
 import io.github.youngkim90.kotlinboard.Exception.PostNotDeletableException
 import io.github.youngkim90.kotlinboard.Exception.PostNotFoundException
-import io.github.youngkim90.kotlinboard.controller.domain.Post
+import io.github.youngkim90.kotlinboard.domain.Post
 import io.github.youngkim90.kotlinboard.repository.PostRepository
 import io.github.youngkim90.kotlinboard.service.dto.*
 import org.springframework.data.domain.Page

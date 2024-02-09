@@ -1,4 +1,4 @@
-package io.github.youngkim90.kotlinboard.controller.domain
+package io.github.youngkim90.kotlinboard.domain
 
 import io.github.youngkim90.kotlinboard.Exception.PostNotUpdatableException
 import io.github.youngkim90.kotlinboard.service.dto.PostUpdateRequestDto
