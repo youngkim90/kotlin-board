@@ -4,6 +4,7 @@ import io.github.youngkim90.kotlinboard.Exception.PostNotDeletableException
 import io.github.youngkim90.kotlinboard.Exception.PostNotFoundException
 import io.github.youngkim90.kotlinboard.domain.Post
 import io.github.youngkim90.kotlinboard.repository.PostRepository
+import io.github.youngkim90.kotlinboard.repository.TagRepository
 import io.github.youngkim90.kotlinboard.service.dto.*
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional
 class PostService(
   private val postRepository: PostRepository,
   private val likeService: LikeService,
+  private val tagRepository: TagRepository,
 ) {
   private fun findById(id: Long): Post {
     return postRepository.findByIdOrNull(id) ?: throw PostNotFoundException()
@@ -51,6 +53,9 @@ class PostService(
     pageRequest: Pageable,
     postSearchRequestDto: PostSearchRequestDto,
   ): Page<PostSummaryResponseDto> {
+    postSearchRequestDto.tag?.let {
+      return tagRepository.findPageBy(pageRequest, it).toSummaryResponseDto(likeService::countLike)
+    }
     return postRepository.findPageBy(pageRequest, postSearchRequestDto).toSummaryResponseDto(likeService::countLike)
   }
 }

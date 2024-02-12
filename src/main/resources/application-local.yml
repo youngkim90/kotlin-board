@@ -11,4 +11,4 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        dialect: org.hibernate.dialect.MySQLDialect
+        default_batch_fetch_size: 100 # 한번에 최대 100개(in)의 데이터를 가져오도록 쿼리(N+1 문제 해결)
