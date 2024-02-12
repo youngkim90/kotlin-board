@@ -1,5 +1,6 @@
 package io.github.youngkim90.kotlinboard.repository
 
+import io.github.youngkim90.kotlinboard.domain.QPost.post
 import io.github.youngkim90.kotlinboard.domain.QTag.tag
 import io.github.youngkim90.kotlinboard.domain.Tag
 import org.springframework.data.domain.Page
@@ -19,9 +20,9 @@ interface CustomTagRepository {
 class CustomTagRepositoryImpl : CustomTagRepository, QuerydslRepositorySupport(Tag::class.java) {
   override fun findPageBy(pageRequest: Pageable, tagName: String): Page<Tag> {
     return from(tag)
-      .join(tag.post).fetchJoin() // N+1 문제 해결
+      .join(tag.post, post).fetchJoin() // N+1 문제 해결
       .where(tag.name.eq(tagName))
-      .orderBy(tag.post.createdAt.desc())
+      .orderBy(post.createdAt.desc())
       .offset(pageRequest.offset)
       .limit(pageRequest.pageSize.toLong())
       .fetchResults()

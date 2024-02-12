@@ -5,6 +5,7 @@ import io.github.youngkim90.kotlinboard.service.dto.CommentUpdateRequestDto
 import jakarta.persistence.*
 
 @Entity
+@Table(indexes = [Index(name = "idx_post_id", columnList = "post_id")])
 class Comment(
   content: String,
   post: Post,
@@ -18,6 +19,7 @@ class Comment(
     protected set
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(foreignKey = ForeignKey(ConstraintMode.NO_CONSTRAINT)) // 외래키 제약조건 제거
   var post: Post = post
     protected set
 
