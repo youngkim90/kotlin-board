@@ -10,3 +10,8 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 100 # 한번에 최대 100개(in)의 데이터를 가져오도록 쿼리(N+1 문제 해결)
+  cache:
+    type: redis
+    redis:
+      host: kotlin-board-redis-nvqkxy.serverless.apn2.cache.amazonaws.com:6379
+      port: 6379
