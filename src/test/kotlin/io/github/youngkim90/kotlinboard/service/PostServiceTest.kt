@@ -13,6 +13,7 @@ import io.github.youngkim90.kotlinboard.service.dto.PostSearchRequestDto
 import io.github.youngkim90.kotlinboard.service.dto.PostUpdateRequestDto
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.extensions.testcontainers.perSpec
 import io.kotest.matchers.longs.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -20,7 +21,16 @@ import io.kotest.matchers.string.shouldContain
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
+import org.testcontainers.containers.GenericContainer
 
+/**
+ * kotest TDD 테스트코드 작성 방법
+ * 1. 테스트 하려는 기능을 설명한다.(given)
+ * 2. 기능의 실행 조건과 실행 결과를 설명한다.(when, then)
+ * 3. 실행 조건과 검증 로직을 작성한다.
+ * 4. 서비스 비즈니스 로직을 작성한다.
+ * 5. 테스트를 실행한다.
+ */
 @SpringBootTest
 class PostServiceTest(
   private val postService: PostService,
@@ -29,15 +39,12 @@ class PostServiceTest(
   private val tagRepository: TagRepository,
   private val likeService: LikeService,
 ) : BehaviorSpec({ // given, when, then 구조의 테스트
-  /**
-   * kotest TDD 테스트코드 작성 방법
-   * 1. 테스트 하려는 기능을 설명한다.(given)
-   * 2. 기능의 실행 조건과 실행 결과를 설명한다.(when, then)
-   * 3. 실행 조건과 검증 로직을 작성한다.
-   * 4. 서비스 비즈니스 로직을 작성한다.
-   * 5. 테스트를 실행한다.
-   */
+  val redisContainer = GenericContainer<Nothing>("redis:5.0.3-alpine")
   beforeSpec {
+    redisContainer.portBindings.add("16379:6379")
+    redisContainer.start()
+    listener(redisContainer.perSpec())
+
     postRepository.saveAll(
       listOf(
         Post(title = "title1", content = "content", createdBy = "Ryan1", tags = listOf("태그1", "태그2")),
@@ -50,6 +57,9 @@ class PostServiceTest(
         Post(title = "title18", content = "content", createdBy = "Ryan8", tags = listOf("태그1", "태그5"))
       )
     )
+  }
+  afterSpec {
+    redisContainer.stop()
   }
   given("게시글 생성시") {
     When("게시글 생성") {
