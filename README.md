@@ -18,7 +18,7 @@
 9. 태그 C,R,U,D 기능 테스트(**TDD**) 및 API 구현
 10. 좋아요 API, 도메인(엔티티) 설계
 11. 좋아요 기능 테스트(**TDD**) 및 API 구현
-12. 성능 최적화(N+1, DB Index, ElastiCache(Redis))
+12. 성능 최적화(N+1, DB Index, ElastiCache(Redis), Event(비동기))
 
 [자동배포 게시판 서비스 API 명세서 링크](http://kotlin-board.ap-northeast-2.elasticbeanstalk.com/swagger-ui/index.html#/)
 
