@@ -13,5 +13,5 @@ spring:
   cache:
     type: redis
     redis:
-      host: kotlin-board-redis-nvqkxy.serverless.apn2.cache.amazonaws.com:6379
+      host: kotlin-board-redis-nvqkxy.serverless.apn2.cache.amazonaws.com
       port: 6379
